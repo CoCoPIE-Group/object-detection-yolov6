@@ -1,7 +1,7 @@
 # COCO 2017 dataset http://cocodataset.org
 train: /data/object-detection-yolov6/coco/images/train2017 # 118287 images
-val: /data/object-detection-yolov6/coco//images/val2017  # 5000 images
-test: /data/object-detection-yolov6/coco/data/object-detection-yolov6/coco/images/test2017
+val: /data/object-detection-yolov6/coco/images/val2017  # 5000 images
+test: /data/object-detection-yolov6/coco/images/test2017
 anno_path: /data/object-detection-yolov6/coco/annotations/instances_val2017.json
 # number of classes
 nc: 80
