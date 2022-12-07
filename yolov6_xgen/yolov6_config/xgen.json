@@ -1,0 +1,81 @@
+{
+  "general": {
+    "user_id": "test",
+    "work_place": null,
+    "tran_scripts_path": null,
+    "pretrained_model_path": null,
+    "enable_ddp": false,
+    "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+    "random_seed": 3407
+  },
+  "user_requirements": {
+    "power": null,
+    "accuracy": null,
+    "accuracy_reverse_yn": 0,
+    "model_size": null,
+    "memory_size": null,
+    "latency": 21.986,
+    "margin": 0.1,
+    "target_type": "latency",
+    "max_sampling": 10,
+    "searching_variable": "width_multiple",
+    "searching_range": [
+      0.1,
+      0.75
+    ],
+    "searching_granularity": null
+  },
+  "compiler": {
+    "input_shape": "(1,3,640,640)",
+    "opset_version": 11
+  },
+  "training_script_args": {
+    "train_data_path": "/data/object-detection-yolov6/coco",
+    "train_label_path": null,
+    "eval_data_path": "/data/object-detection-yolov6/coco",
+    "eval_label_path": null,
+    "learning_rate": 0.01,
+    "common_train_epochs": 300,
+    "batch_size": 16,
+    "root_path": "./Xgen/",
+    "hyp": "./data/hyps/hyp.scratch-high.yaml",
+    "data": "coco.yaml",
+    "cfg": "yolov6s.py",
+    "weights": null,
+    "device": null,
+    "imgsz": 640,
+    "width_multiple": 0.6,
+    "depth_multiple": 0.75,
+    "workers": 16,
+    "noplots": true
+  },
+  "pruning": {
+    "sp_retrain": false,
+    "sp_admm": false,
+    "sp_config_file": null,
+    "sp_admm_update_epoch": 5,
+    "sp_admm_rho": 0.001,
+    "sparsity_type": "block_punched",
+    "sp_admm_lr": 0.01,
+    "sp_global_weight_sparsity": false,
+    "sp_admm_block": "(8,4)",
+    "sp_prune_ratios": 0,
+    "sp_prune_threshold": -1.0
+  },
+  "train": {
+    "log_save_folder": "logs",
+    "eval_dataset_id": null,
+    "training_dataset_id": null,
+    "uuid": "yolov6",
+    "accuracy_reverse_yn": 0,
+    "common_save_best_yn": 1
+  },
+  "scaling": {
+    "searching_variable": "width_multiple",
+    "searching_range": [
+      0.1,
+      0.75
+    ],
+    "searching_granularity": null
+  }
+}

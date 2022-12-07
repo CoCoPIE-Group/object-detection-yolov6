@@ -1,0 +1,19 @@
+{
+  "description": "this is a sample of customized ai config file in non-interactive mode",
+  "devices":[],
+  "xgen_config_file": "./yolov6_config/xgen.json",
+  "training_script_folder": "./",
+  "xgen_mode_options": ["compatible_testing", "pruning", "scaling", "customization"],
+  "xgen_mode": "customization",
+  "xgen_gpus": "0",
+  "xgen_learning_rate": 0.0032,
+  "xgen_batch_size": 32,
+  "xgen_epochs": 1,
+  "primary_interest_options": ["latency", "quality_score"],
+  "primary_interest": "quality_score",
+  "latency": "80ms",
+  "quality_score": ">=90",
+  "resume_workplace_path":"",
+  "custom_workplace_path": "",
+  "pretrained_model_path": ""
+}
