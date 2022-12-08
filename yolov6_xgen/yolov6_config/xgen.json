@@ -3,7 +3,7 @@
     "user_id": "test",
     "work_place": null,
     "tran_scripts_path": null,
-    "pretrained_model_path": null,
+    "pretrained_model_path": "/root/Projects/object-detection-yolov6/yolov6_xgen/yolov6_config/xgen.pt",
     "enable_ddp": false,
     "CUDA_VISIBLE_DEVICES": "0,1,2,3",
     "random_seed": 3407
