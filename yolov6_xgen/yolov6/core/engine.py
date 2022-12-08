@@ -81,7 +81,7 @@ class Trainer:
 
         # xgen_load
 
-        xgen_load(model, args_ai=args_ai)
+        xgen_load(self.model, args_ai=args_ai)
 
         self.max_epoch = args.epochs
         self.max_stepnum = len(self.train_loader)
@@ -99,8 +99,8 @@ class Trainer:
             self.loss_num += 1
             self.loss_info += ['cwd_loss']
 
-        CL.init(args=self.args_ai, model=model, optimizer=self.optimizer, data_loader=self.train_loader)
-        print_sparsity(model, show_sparse_only=True)
+        CL.init(args=self.args_ai, model=self.model, optimizer=self.optimizer, data_loader=self.train_loader)
+        print_sparsity(self.model, show_sparse_only=True)
     # Training Process
     def train(self):
         try:
@@ -549,4 +549,3 @@ class Trainer:
                 assert cfg.qat.calib_pt is not None, 'Please provide calibrated model'
                 model.load_state_dict(torch.load(cfg.qat.calib_pt)['model'].float().state_dict())
             model.to(device)
-
