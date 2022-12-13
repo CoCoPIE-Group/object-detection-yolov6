@@ -133,7 +133,7 @@ class Detect(nn.Module):
             return torch.cat(
                 [
                     pred_bboxes,
-                    # obj,
+                    obj,
                     cls_score_list
                 ],
                 dim=-1)
