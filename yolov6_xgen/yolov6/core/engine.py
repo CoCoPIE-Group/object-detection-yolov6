@@ -45,7 +45,6 @@ class Trainer:
         self.main_process = self.rank in [-1, 0]
         self.save_dir = args.save_dir
         # get data loader
-        # self.epoch = 0
         self.data_dict = load_yaml(args.data_path)
         self.num_classes = self.data_dict['nc']
         self.train_loader, self.val_loader = self.get_data_loader(args, cfg, self.data_dict)
@@ -82,7 +81,6 @@ class Trainer:
         # xgen_load
 
         xgen_load(self.model, args_ai=args_ai)
-
         self.max_epoch = args.epochs
         self.max_stepnum = len(self.train_loader)
         self.batch_size = args.batch_size
@@ -91,7 +89,6 @@ class Trainer:
         self.write_trainbatch_tb = args.write_trainbatch_tb
         # set color for classnames
         self.color = [tuple(np.random.choice(range(256), size=3)) for _ in range(self.model.nc)]
-
 
         self.loss_num = 3
         self.loss_info = ['Epoch', 'iou_loss', 'dfl_loss', 'cls_loss']
@@ -112,10 +109,11 @@ class Trainer:
             self.strip_model()
             model_dummy = self.ema.ema if self.ema else self.model
             from yolov6.utils.export_onnx import export_onnx
-            self.eval_model()
-            self.ap = self.evaluate_results[1]
-            xgen_record(self.args_ai, model_dummy, float(self.ap), epoch=-1)
-            export_onnx(self.args_ai, copy.deepcopy(model_dummy))
+            if self.epoch == 0:
+                self.eval_after_train()
+                self.ap_no_train = self.evaluate_results[1]
+                xgen_record(self.args_ai, model_dummy, float(self.ap_no_train), epoch=-1)
+                export_onnx(self.args_ai, copy.deepcopy(model_dummy))
 
         except Exception as _:
             LOGGER.error('ERROR in training loop or eval/save model.')
@@ -223,7 +221,8 @@ class Trainer:
             results, vis_outputs, vis_paths = eval.run(self.data_dict,
                             batch_size=self.batch_size // self.world_size * 2,
                             img_size=self.img_size,
-                            model=self.ema.ema if self.args.calib is False else self.model,
+                            # model=self.ema.ema if self.args.calib is False else self.model,
+                            model=self.ema.ema if self.ema else self.model,
                             conf_thres=0.03,
                             dataloader=self.val_loader,
                             save_dir=self.save_dir,
@@ -263,6 +262,18 @@ class Trainer:
         # plot validation predictions
         self.plot_val_pred(vis_outputs, vis_paths)
 
+    def eval_after_train(self):
+        results, vis_outputs, vis_paths = eval.run(self.data_dict,
+                                                   batch_size=self.batch_size // self.world_size * 2,
+                                                   img_size=self.img_size,
+                                                   # model=self.ema.ema if self.args.calib is False else self.model,
+                                                   model=self.model,
+                                                   conf_thres=0.03,
+                                                   dataloader=self.val_loader,
+                                                   save_dir=self.save_dir,
+                                                   task='train')
+        LOGGER.info(f"Epoch: {self.epoch} | mAP@0.5: {results[0]} | mAP@0.50:0.95: {results[1]}")
+        self.evaluate_results = results[:2]
 
     def train_before_loop(self):
         LOGGER.info('Training start...')
