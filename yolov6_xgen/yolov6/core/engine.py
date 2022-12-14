@@ -35,7 +35,6 @@ class Trainer:
         self.cfg = cfg
         self.device = device
         self.args_ai = args_ai
-
         if args.resume:
             self.ckpt = torch.load(args.resume, map_location='cpu')
 
@@ -45,7 +44,9 @@ class Trainer:
         self.main_process = self.rank in [-1, 0]
         self.save_dir = args.save_dir
         # get data loader
-        self.data_dict = load_yaml(args.data_path)
+        # self.data_dict = load_yaml(args.data_path)
+        self.data_dict = load_yaml(self.args_ai['origin']['data'])
+        print("self.data_dict===========",self.data_dict)
         self.num_classes = self.data_dict['nc']
         self.train_loader, self.val_loader = self.get_data_loader(args, cfg, self.data_dict)
         # get model and optimizer
@@ -251,8 +252,8 @@ class Trainer:
                             not_infer_on_rect=get_cfg_value(self.cfg.eval_params, "not_infer_on_rect", False),
                             scale_exact=get_cfg_value(self.cfg.eval_params, "scale_exact", False),
                             verbose=get_cfg_value(self.cfg.eval_params, "verbose", False),
-                            do_coco_metric=get_cfg_value(self.cfg.eval_params, "do_coco_metric", True),
-                            do_pr_metric=get_cfg_value(self.cfg.eval_params, "do_pr_metric", False),
+                            do_coco_metric=get_cfg_value(self.cfg.eval_params, "do_coco_metric", False),
+                            do_pr_metric=get_cfg_value(self.cfg.eval_params, "do_pr_metric", True),
                             plot_curve=get_cfg_value(self.cfg.eval_params, "plot_curve", False),
                             plot_confusion_matrix=get_cfg_value(self.cfg.eval_params, "plot_confusion_matrix", False),
                             )
