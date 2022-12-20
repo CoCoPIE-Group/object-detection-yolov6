@@ -13,6 +13,7 @@ English | [简体中文](README_cn.md)
   </div>
  <br>
 
+
 ## YOLOv6
 
 Implementation of paper - [YOLOv6: A Single-Stage Object Detection Framework for Industrial Applications](https://arxiv.org/abs/2209.02976)
