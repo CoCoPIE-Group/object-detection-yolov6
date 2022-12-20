@@ -27,6 +27,7 @@ YOLOv6 has a series of models for various industrial scenarios, including N/T/S/
 YOLOv6-N hits 35.9% AP on COCO dataset with 1234 FPS on T4. YOLOv6-S strikes 43.5% AP with 495 FPS, and the quantized YOLOv6-S model achieves 43.3% AP at a accelerated speed of 869 FPS on T4. YOLOv6-T/M/L also have excellent performance, which show higher accuracy than other detectors with the similar inference speed.
 
 
+
 ## What's New
 
 - [2022.11.04] Release [base models](configs/base/README.md) to simplify the training and deployment process.
