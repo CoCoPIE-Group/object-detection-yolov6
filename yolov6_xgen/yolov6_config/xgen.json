@@ -39,7 +39,7 @@
     "batch_size": 16,
     "root_path": "./Xgen/",
     "hyp": "./data/hyps/hyp.scratch-high.yaml",
-    "data": "coco.yaml",
+    "data": "/root/Projects/object-detection-yolov6/yolov6_xgen/data/coco.yaml",
     "cfg": "yolov6s.py",
     "weights": null,
     "device": null,
