@@ -35,6 +35,8 @@ class Trainer:
         self.cfg = cfg
         self.device = device
         self.args_ai = args_ai
+        self.cfg.model.depth_multiple = self.args_ai["origin"]["depth_multiple"]
+        self.cfg.model.width_multiple = self.args_ai["origin"]["width_multiple"]
         if args.resume:
             self.ckpt = torch.load(args.resume, map_location='cpu')
 
@@ -46,7 +48,7 @@ class Trainer:
         # get data loader
         # self.data_dict = load_yaml(args.data_path)
         self.data_dict = load_yaml(self.args_ai['origin']['data'])
-        print("self.data_dict===========",self.data_dict)
+        print("self.data_dict===========", self.data_dict)
         self.num_classes = self.data_dict['nc']
         self.train_loader, self.val_loader = self.get_data_loader(args, cfg, self.data_dict)
         # get model and optimizer
