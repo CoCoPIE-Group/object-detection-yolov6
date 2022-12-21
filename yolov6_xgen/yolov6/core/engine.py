@@ -64,7 +64,8 @@ class Trainer:
         else:
             self.optimizer = self.get_optimizer(args, cfg, model)
         self.scheduler, self.lf = self.get_lr_scheduler(args, cfg, self.optimizer)
-        self.ema = ModelEMA(model) if self.main_process else None
+        # self.ema = ModelEMA(model) if self.main_process else None
+        self.ema = None
         # tensorboard
         self.tblogger = SummaryWriter(self.save_dir) if self.main_process else None
         self.epoch = 0
@@ -75,9 +76,9 @@ class Trainer:
             model.load_state_dict(resume_state_dict, strict=True)  # load
             self.start_epoch = self.ckpt['epoch'] + 1
             self.optimizer.load_state_dict(self.ckpt['optimizer'])
-            if self.main_process:
-                self.ema.ema.load_state_dict(self.ckpt['ema'].float().state_dict())
-                self.ema.updates = self.ckpt['updates']
+            # if self.main_process:
+            #     self.ema.ema.load_state_dict(self.ckpt['ema'].float().state_dict())
+            #     self.ema.updates = self.ckpt['updates']
         self.model = self.parallel_model(args, model, device)
         self.model.nc, self.model.names = self.data_dict['nc'], self.data_dict['names']
 
@@ -177,7 +178,7 @@ class Trainer:
         eval_interval = self.args.eval_interval if remaining_epochs > self.args.heavy_eval_range else 1
         is_val_epoch = (not self.args.eval_final_only or (remaining_epochs == 1)) and (self.epoch % eval_interval == 0)
         if self.main_process:
-            self.ema.update_attr(self.model, include=['nc', 'names', 'stride']) # update attributes for ema model
+            # self.ema.update_attr(self.model, include=['nc', 'names', 'stride']) # update attributes for ema model
             # if is_val_epoch:
             self.eval_model()
             self.ap = self.evaluate_results[1]
@@ -186,7 +187,7 @@ class Trainer:
             # save ckpt
             ckpt = {
                     'model': deepcopy(de_parallel(self.model)).half(),
-                    'ema': deepcopy(self.ema.ema).half(),
+                    # 'ema': deepcopy(self.ema.ema).half(),
                     'updates': self.ema.updates,
                     'optimizer': self.optimizer.state_dict(),
                     'epoch': self.epoch,
