@@ -188,7 +188,7 @@ class Trainer:
             ckpt = {
                     'model': deepcopy(de_parallel(self.model)).half(),
                     # 'ema': deepcopy(self.ema.ema).half(),
-                    'updates': self.ema.updates,
+                    # 'updates': self.ema.updates,
                     'optimizer': self.optimizer.state_dict(),
                     'epoch': self.epoch,
                     }
